@@ -1,19 +1,24 @@
-<button (click)="one()">1</button>
-<button (click)="two()">2</button>
-<button (click)="three()">3</button>
-<button (click)="plus()">+</button>
-<br/>
-<button (click)="four()">4</button>
-<button (click)="five()">5</button>
-<button (click)="six()">6</button>
-<button (click)="minus()">-</button>
-<br/>
-<button (click)="seven()">7</button>
-<button (click)="eight()">8</button>
-<button (click)="nine()">9</button>
-<button (click)="multiply()">*</button>
-<br/>
-<button (click)="zero()">0</button>
-<button (click)="division()">/</button>
-<button (click)="equal()">=</button>
-<button (click)="clear()">C</button>
+<div class="calculator">
+  <button (click)="number(1)">1</button>
+  <button (click)="number(2)">2</button>
+  <button (click)="number(3)">3</button>
+  <button class="op" (click)="op('+')">+</button>
+  <br>
+
+  <button (click)="number(4)">4</button>
+  <button (click)="number(5)">5</button>
+  <button (click)="number(6)">6</button>
+  <button class="op" (click)="op('-')">-</button>
+  <br>
+
+  <button (click)="number(7)">7</button>
+  <button (click)="number(8)">8</button>
+  <button (click)="number(9)">9</button>
+  <button class="op" (click)="op('*')">x</button>
+  <br>
+
+  <button class="clear" (click)="clear()">C</button>
+  <button (click)="number(0)">0</button>
+  <button class="equal" (click)="equal()">=</button>
+  <button class="op" (click)="op('/')">/</button>
+</div>

@@ -8,37 +8,21 @@ import { Service } from '../service';
   standalone: true,
 })
 export class Button {
-  constructor(protected common: Service) { } // constructor injection
+   constructor(public service: Service) {}
 
-  // Number buttons
-  one()
-   { this.common.pressNumber('1'); }
-  two() 
-  { this.common.pressNumber('2'); }
-  three()
-   { this.common.pressNumber('3'); }
-  four() 
-  { this.common.pressNumber('4'); }
-  five() 
-  { this.common.pressNumber('5'); }
-  six() 
-  { this.common.pressNumber('6'); }
-  seven()
-   { this.common.pressNumber('7'); }
-  eight()
-   { this.common.pressNumber('8'); }
-  nine() 
-  { this.common.pressNumber('9'); }
-  zero() 
-  { this.common.pressNumber('0'); }
+  number(n: number) {
+  this.service.addNumber(n);
+}
 
-  // Operator buttons
-  plus() { this.common.pressOperator('+'); }
-  minus() { this.common.pressOperator('-'); }
-  multiply() { this.common.pressOperator('*'); }
-  division() { this.common.pressOperator('/'); }
+op(op: string) {
+  this.service.addOperator(op);
+}
 
-  // Other actions
-  equal() { this.common.calculate(); }
-  clear() { this.common.clear(); }
+equal() {
+  this.service.equal();
+}
+
+clear() {
+  this.service.clear();
+}
 }

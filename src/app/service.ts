@@ -1,63 +1,79 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Service {
-  private expression: string = '';
 
-  // Add number or operator
-  pressNumber(num: string) {
-    this.expression += num;
+  // final calculated value
+  result = signal<number>(0);
+
+  // screen display value
+  display = signal<string>('');
+
+  // number button click
+  addNumber(n: number) {
+    this.display.set(this.display() + n);
   }
 
-  pressOperator(op: string) {
-    this.expression += op;
+  // operator button click (+ - * /)
+  addOperator(op: string) {
+    this.display.set(this.display() + op);
   }
 
-  add() {
-    this.expression += '+';
-  }
+  // = button click
+  equal() {
+    const exp = this.display(); // example: 4+2*5
 
-  subtract() {
-    this.expression += '-';
-  }
+    let numbers: number[] = [];   // store numbers
+    let operators: string[] = []; // store operators
+    let temp = '';
 
-  multiply() {
-    this.expression += '*';
-  }
+    // split expression into numbers and operators
+    for (let ch of exp) {
+      if (ch === '+' || ch === '-' || ch === '*' || ch === '/') {
+        numbers.push(Number(temp));
+        operators.push(ch);
+        temp = '';
+      } else {
+        temp += ch;
+      }
+    }
+    numbers.push(Number(temp));
 
-  divide() {
-    this.expression += '/';
-  }
+    // first solve * and /
+    for (let i = 0; i < operators.length; i++) {
+      if (operators[i] === '*' || operators[i] === '/') {
+        const a = numbers[i];
+        const b = numbers[i + 1];
 
-  // Calculate two-number expression
-  calculate() {
-    const match = this.expression.match(/(-?\d+\.?\d*)([+\-*/])(-?\d+\.?\d*)/);
+        const value =
+          operators[i] === '*' ? a * b : a / b;
 
-    if (!match) {
-      this.expression = 'Error';
-      return;
+        numbers.splice(i, 2, value);
+        operators.splice(i, 1);
+        i--;
+      }
     }
 
-    const a = parseFloat(match[1]);
-    const operator = match[2];
-    const b = parseFloat(match[3]);
-    let result = 0;
+    // then solve + and -
+    let total = numbers[0];
+    for (let i = 0; i < operators.length; i++) {
+      if (operators[i] === '+') {
+        total += numbers[i + 1];
+      } else {
+        total -= numbers[i + 1];
+      }
+    }
 
-    if (operator === '+') result = a + b;
-    else if (operator === '-') result = a - b;
-    else if (operator === '*') result = a * b;
-    else if (operator === '/') result = b !== 0 ? a / b : NaN;
-
-    this.expression = isNaN(result) ? 'Error' : result.toString();
+    // show final answer
+    this.result.set(total);
+    this.display.set(String(total));
   }
 
+  // clear all
   clear() {
-    this.expression = '';
-  }
-
-  getResult() {
-    return this.expression;
+    this.result.set(0);
+    this.display.set('');
   }
 }

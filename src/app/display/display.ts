@@ -8,5 +8,5 @@ import { Service } from '../service';
   standalone: true,             
 })
 export class Display {
-  protected readonly common = inject(Service); 
+  constructor(public service: Service) {}
 }
